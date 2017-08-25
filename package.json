@@ -1,6 +1,6 @@
 {
   "name": "type-api",
-  "version": "0.0.2-alpha.0",
+  "version": "0.0.2-beta.0",
   "description": "Typescript enabled API library",
   "main": "umd/type-api.js",
   "module": "lib/index.js",
@@ -90,11 +90,7 @@
   },
   "dependencies": {
     "axios": "0.16.2",
-    "reflect-metadata": "0.1.10",
-    "tslint-consistent-codestyle": "1.6.0",
-    "tslint-eslint-rules": "4.1.1",
-    "tslint-microsoft-contrib": "5.0.1",
-    "tslint-react": "3.2.0"
+    "reflect-metadata": "0.1.10"
   },
   "devDependencies": {
     "@types/jest": "20.0.8",
@@ -119,6 +115,10 @@
     "uglifyjs-webpack-plugin": "0.4.6",
     "validate-commit-msg": "2.14.0",
     "webpack": "3.5.5",
-    "webpack-config-utils": "2.3.0"
+    "webpack-config-utils": "2.3.0",
+    "tslint-consistent-codestyle": "1.6.0",
+    "tslint-eslint-rules": "4.1.1",
+    "tslint-microsoft-contrib": "5.0.1",
+    "tslint-react": "3.2.0"
   }
 }
