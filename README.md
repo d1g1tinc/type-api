@@ -9,66 +9,82 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 
-... TODO: Here will be description of the package ...
-
-
 ## Consumption of published library:
 
 `yarn add type-api` or `npm install type-api`
 
 ### Webpack
 
-... TODO: Update examples below ...
-
 ```ts
-// main.ts
-import { Greeter } from 'my-new-library';
+import {RestApi, rest} from 'type-api'
 
-const mountPoint = document.getElementById('app');
-const App = () => {
-  const greeter = new Greeter('Stranger');
-  return `<h1>${greeter.greet()}</h1>`
+/**
+ * Define rest api
+ */
+@rest({
+    baseUrl: 'https://jsonplaceholder.typicode.com',
+    endpoint: '/posts'
+})
+class PostApi extends RestApi {
+    // Here you can define additional methods as needed
 }
-const render = (Root: Function, where: HTMLElement) => {
-  where.innerHTML = Root();
+
+/**
+ * Initialize api
+ */
+export const postApi = new PostApi()
+
+// Get one by ID
+try {
+    const response = postApi.findById(1)
+
+    console.log(response)
+} catch (error) {
+    console.error(error)
 }
 
-render(App, mountPoint);
+// Create entity
+try {
+    const postData =   {
+        "userId": 1,
+        "title": "New user",
+        "body": "Some content"
+    },
+    const response = postApi.create(postData)
+
+    console.log(response)
+} catch (error) {
+    console.error(error)
+}
+
+// Update entity
+try {
+    const postData =   {
+        "userId": 1,
+        "title": "New user",
+        "body": "Some content"
+    },
+    const response = postApi.update(1, postData)
+
+    console.log(response)
+} catch (error) {
+    console.error(error)
+}
 ```
 
-```html
-<html>
-  <head>
-    <script src="bundle.js" async></script>
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
-</html>
-```
+### Available methods
 
-### UMD ( no bundler )
 
-```html
-<html>
-  <head>
-    <script src="node_modules/my-lib/umd/my-new-library.min.js"></script>
-    <script async>
-        var Greeter = MyLib.Greeter;
+## Rest API
 
-        var App = function() {
-          var greeter = new Greeter('Stranger');
-          return '<h1>'+greeter.greet()+'</h1>'
-        }
-        var render = function(Root, where) {
-          where.innerHTML = Root();
-        }
+* `findById(id)` : GET - retrieve one record as object
+* `findAll()` : GET - retrieve all records as list
+* `find({limit: 3})` : GET - retrieve records as list and generate query string from object
+* `create({name: 'Some Name'})` : POST - submit object for creation
+* `update(1, {name: 'Some Name'})` : PUT - submit object for update
 
-        render(App, mountPoint);
-    </script>
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
-</html>
-```
+## Base API
+
+* `get('custom')`
+* `post('custom', postData)`
+* `put('custom', postData)`
