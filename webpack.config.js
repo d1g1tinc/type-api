@@ -79,6 +79,9 @@ const config = (env = DEFAULT_ENV) => {
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: ifProd('"production"', '"development"') },
     }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    })
   ])
 
   const UMDConfig = {
@@ -89,6 +92,8 @@ const config = (env = DEFAULT_ENV) => {
     entry: {
       [ifProd(`${packageName}.min`, packageName)]: [PATHS.entryPoint],
     },
+    target: 'node',
+    node: {process: false},
     // The output defines how and where we want the bundles. The special
     // value `[name]` in `filename` tell Webpack to use the name we defined above.
     // We target a UMD and name it MyLib. When including the bundle in the browser

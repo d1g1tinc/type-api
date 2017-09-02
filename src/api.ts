@@ -103,7 +103,15 @@ export class Api {
 
     async get<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
         try {
-            const {endpoint, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, null, initialOptions)
+            const urlBuild = []
+
+            if (this.endpoint && this.endpoint !== '') {
+                urlBuild.push(this.endpoint)
+            }
+
+            urlBuild.push(initialEndpoint)
+
+            const {endpoint, options} = this.prepareRequest(urlBuild.join('/'), null, initialOptions)
 
             let response = await this.driver.get(endpoint, options)
 
@@ -111,6 +119,8 @@ export class Api {
 
             return <T>response.data
         } catch (error) {
+            console.log(error)
+
             throw this.handlerError(error)
         }
     }
