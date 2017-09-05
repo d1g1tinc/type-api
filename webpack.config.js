@@ -92,7 +92,6 @@ const config = (env = DEFAULT_ENV) => {
     entry: {
       [ifProd(`${packageName}.min`, packageName)]: [PATHS.entryPoint],
     },
-    target: 'node',
     node: {process: false},
     // The output defines how and where we want the bundles. The special
     // value `[name]` in `filename` tell Webpack to use the name we defined above.
