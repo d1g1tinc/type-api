@@ -36,7 +36,7 @@ export function before (requestHandler: any): any {
     }
 }
 
-export function after (responseHandler: any): any {
+export function after(responseHandler: any): any {
     return (target: any, propertyName: string, descriptor: any) => {
         // Method
         if (descriptor) {
@@ -61,15 +61,14 @@ export function after (responseHandler: any): any {
             return
         }
 
-        // class
-        const afterRequest = Reflect.getMetadata('afterRequest', Object.getPrototypeOf(target.prototype)) || []
+        const afterRequest = Reflect.getMetadata('afterRequest', target) || []
 
         afterRequest.push(responseHandler)
 
         Reflect.defineMetadata(
             'afterRequest',
             afterRequest,
-            Object.getPrototypeOf(target.prototype)
+            target
         )
 
         return target

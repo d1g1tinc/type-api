@@ -46,7 +46,7 @@ export class Api {
     }
 
     afterResponse(response: any) {
-        const afterRequest = Reflect.getMetadata('afterRequest', Object.getPrototypeOf(this))
+        const afterRequest = Reflect.getMetadata('afterRequest', this.constructor)
 
         if (!afterRequest) {
             return response
