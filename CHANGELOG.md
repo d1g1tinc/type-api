@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.2-beta.5"></a>
+## [0.0.2-beta.5](https://www.github.com/casual-solutions/type-api/compare/v0.0.2-beta.4...v0.0.2-beta.5) (2017-09-13)
+
+
+### Bug Fixes
+
+* **after decorator:** Fixed [@after](https://github.com/after) decorator ([d7fc541](https://www.github.com/casual-solutions/type-api/commit/d7fc541))
+
+
+
 <a name="0.0.2-beta.4"></a>
 ## [0.0.2-beta.4](https://www.github.com/casual-solutions/type-api/compare/v0.0.2-beta.3...v0.0.2-beta.4) (2017-09-05)
 
