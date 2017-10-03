@@ -59,4 +59,12 @@ export class RestApi extends Api {
             throw error
         }
     }
+
+    async updateAttributes<T = any>(id: number | string, data: any, options?: any): Promise<T> {
+        try {
+            return await this.patch<T>(`${id}`, data, options)
+        } catch (error) {
+            throw error
+        }
+    }
 }

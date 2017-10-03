@@ -24,4 +24,8 @@ export class AxiosDriver {
     public put(url: string, putData: IOptions, options?: IOptions): Promise<any> {
         return axios.put(`${this.baseUrl}${url}`, putData, options)
     }
+
+    public patch(url: string, patchData: IOptions, options?: IOptions): Promise<any> {
+        return axios.patch(`${this.baseUrl}${url}`, patchData, options)
+    }
 }

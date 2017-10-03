@@ -101,6 +101,20 @@ export class Api {
         }
     }
 
+    async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
+        try {
+            const {endpoint, postData, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, initialPostData, initialOptions)
+
+            let response = await this.driver.patch(endpoint, postData, options)
+
+            response = this.afterResponse(response)
+
+            return <T>response.data
+        } catch (error) {
+            throw this.handlerError(error)
+        }
+    }
+
     async get<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
         try {
             const urlBuild = []
