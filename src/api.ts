@@ -60,7 +60,7 @@ export class Api {
     }
 
     handlerError(error: any) {
-        const onError = Reflect.getMetadata('onError', Object.getPrototypeOf(this))
+        const onError = Reflect.getMetadata('onError', this.constructor)
 
         if (!onError) {
             return error
