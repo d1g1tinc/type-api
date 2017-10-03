@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.0-beta.3"></a>
+# [0.1.0-beta.3](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.2...v0.1.0-beta.3) (2017-10-03)
+
+
+### Features
+
+* Delete endpoint ([6ce4dae](https://www.github.com/casual-solutions/type-api/commit/6ce4dae))
+
+
+
 <a name="0.1.0-beta.2"></a>
 # [0.1.0-beta.2](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.1...v0.1.0-beta.2) (2017-10-03)
 
