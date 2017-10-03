@@ -22,14 +22,14 @@ export function rest({endpoint, baseUrl}: {endpoint: string, baseUrl: string}) {
 
 export function before (requestHandler: any): any {
     return (target: any, propertyName: any, descriptor: any) => {
-      const beforeRequest = Reflect.getMetadata('beforeRequest', Object.getPrototypeOf(target.prototype)) || []
+      const beforeRequest = Reflect.getMetadata('beforeRequest', target) || []
 
       beforeRequest.push(requestHandler)
 
       Reflect.defineMetadata(
         'beforeRequest',
         beforeRequest,
-        Object.getPrototypeOf(target.prototype)
+        target
       )
 
       return target
@@ -75,17 +75,17 @@ export function after(responseHandler: any): any {
     }
 }
 
-export function errorHandler (responseHandler: any): any {
+export function errorHandler(responseHandler: any): any {
     return (target: any, propertyName: string, descriptor: any) => {
         // class
-        const onError = Reflect.getMetadata('onError', Object.getPrototypeOf(target.prototype)) || []
+        const onError = Reflect.getMetadata('onError', target) || []
 
         onError.push(responseHandler)
 
         Reflect.defineMetadata(
             'onError',
             onError,
-            Object.getPrototypeOf(target.prototype)
+            target
         )
 
         return target

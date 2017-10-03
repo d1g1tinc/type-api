@@ -20,7 +20,7 @@ export class Api {
             options = {}
         }
 
-        const beforeRequest = Reflect.getMetadata('beforeRequest', Object.getPrototypeOf(this))
+        const beforeRequest = Reflect.getMetadata('beforeRequest', this.constructor)
 
         if (!beforeRequest) {
             return {
