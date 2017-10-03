@@ -67,4 +67,12 @@ export class RestApi extends Api {
             throw error
         }
     }
+
+    async destroy<T = any>(id: number | string, options?: any): Promise<T> {
+        try {
+            return await this.delete<T>(`${id}`, options)
+        } catch (error) {
+            throw error
+        }
+    }
 }

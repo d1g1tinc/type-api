@@ -28,4 +28,8 @@ export class AxiosDriver {
     public patch(url: string, patchData: IOptions, options?: IOptions): Promise<any> {
         return axios.patch(`${this.baseUrl}${url}`, patchData, options)
     }
+
+    public delete(url: string, options?: IOptions): Promise<any> {
+        return axios.delete(`${this.baseUrl}${url}`, options)
+    }
 }

@@ -115,6 +115,20 @@ export class Api {
         }
     }
 
+    async delete<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
+        try {
+            const {endpoint, postData, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, null, initialOptions)
+
+            let response = await this.driver.delete(endpoint, options)
+
+            response = this.afterResponse(response)
+
+            return <T>response.data
+        } catch (error) {
+            throw this.handlerError(error)
+        }
+    }
+
     async get<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
         try {
             const urlBuild = []
