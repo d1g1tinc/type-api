@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.0-beta.2"></a>
+# [0.1.0-beta.2](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.1...v0.1.0-beta.2) (2017-10-03)
+
+
+### Bug Fixes
+
+* Fixed error handler ([ece68df](https://www.github.com/casual-solutions/type-api/commit/ece68df))
+
+
+
 <a name="0.1.0-beta.1"></a>
 # [0.1.0-beta.1](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.0...v0.1.0-beta.1) (2017-10-03)
 

@@ -1,6 +1,6 @@
 {
   "name": "type-api",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "description": "Typescript enabled API library",
   "main": "umd/type-api.js",
   "module": "lib/index.js",
