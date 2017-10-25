@@ -5,7 +5,8 @@ export interface IOptions {
 }
 
 export class AxiosDriver {
-    public baseUrl = ''
+    public baseUrl: string = ''
+    public instance: any = axios
 
     constructor(baseUrl?: string) {
         if (baseUrl) {

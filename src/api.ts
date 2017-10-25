@@ -13,7 +13,7 @@ export interface IError {
 @driver(AxiosDriver)
 export class Api {
     driver: any
-    endpoint: ''
+    endpoint: string
 
     prepareRequest(endpoint: string, postData: any, options: any) {
         if (!options) {
