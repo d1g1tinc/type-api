@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.0-beta.6"></a>
+# [0.1.0-beta.6](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.5...v0.1.0-beta.6) (2017-12-05)
+
+
+### Features
+
+* Added more typescript support ([d9daf65](https://www.github.com/casual-solutions/type-api/commit/d9daf65))
+
+
+
 <a name="0.1.0-beta.5"></a>
 # [0.1.0-beta.5](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.4...v0.1.0-beta.5) (2017-12-01)
 
