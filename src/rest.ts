@@ -13,64 +13,64 @@ export interface IError {
 }
 
 @driver(AxiosDriver)
-export class RestApi extends Api {
+export class RestApi<T_MODEL = any, T_MODEL_LIST = T_MODEL[]> extends Api {
     driver: any
     endpoint: ''
     beforeRequest = []
 
-    async create<T = any>(data: any, options?: any): Promise<T> {
+    async create<T_RESPONSE = T_MODEL, T_REQUEST = T_MODEL>(data: T_REQUEST, options?: any): Promise<T_RESPONSE> {
         try {
-            return await this.post<T>('', data, options)
+            return await this.post<T_RESPONSE>('', data, options)
         } catch (error) {
             throw error
         }
     }
 
-    async update<T = any>(id: number | string, data: any, options?: any): Promise<T> {
+    async update<T_RESPONSE = T_MODEL, T_REQUEST = T_MODEL>(id: number | string, data: T_REQUEST, options?: any): Promise<T_RESPONSE> {
         try {
-            return await this.put<T>(`${id}`, data, options)
+            return await this.put<T_RESPONSE>(`${id}`, data, options)
         } catch (error) {
             throw error
         }
     }
 
-    async findById<T = any>(id: string | number, options?: any): Promise<T> {
+    async findById<T_RESPONSE = T_MODEL>(id: string | number, options?: any): Promise<T_RESPONSE> {
         try {
-            return await this.get<T>(`${id}`, options)
+            return await this.get<T_RESPONSE>(`${id}`, options)
         } catch (error) {
             throw error
         }
     }
 
-    async findAll<T = any>(options?: any): Promise<T> {
+    async findAll<T_RESPONSE = T_MODEL_LIST>(options?: any): Promise<T_RESPONSE> {
         try {
-            return await this.get<T>('', options)
+            return await this.get<T_RESPONSE>('', options)
         } catch (error) {
             throw error
         }
     }
 
-    async find<T = any>(params: Object, options: any = {}): Promise<T> {
+    async find<T_RESPONSE = T_MODEL_LIST>(params: Object, options: any = {}): Promise<T_RESPONSE> {
         options.params = params
 
         try {
-            return await this.get<T>('', options)
+            return await this.get<T_RESPONSE>('', options)
         } catch (error) {
             throw error
         }
     }
 
-    async updateAttributes<T = any>(id: number | string, data: any, options?: any): Promise<T> {
+    async updateAttributes<T_RESPONSE = T_MODEL, T_REQUEST = T_MODEL>(id: number | string, data: T_REQUEST, options?: any): Promise<T_RESPONSE> {
         try {
-            return await this.patch<T>(`${id}`, data, options)
+            return await this.patch<T_RESPONSE>(`${id}`, data, options)
         } catch (error) {
             throw error
         }
     }
 
-    async destroy<T = any>(id: number | string, options?: any): Promise<T> {
+    async destroy<T_RESPONSE = T_MODEL>(id: number | string, options?: any): Promise<T_RESPONSE> {
         try {
-            return await this.delete<T>(`${id}`, options)
+            return await this.delete<T_RESPONSE>(`${id}`, options)
         } catch (error) {
             throw error
         }
