@@ -1,12 +1,13 @@
-import axios from 'axios'
-import moxios from 'moxios'
+import {default as axios, AxiosInstance} from 'axios'
+import * as moxios from 'moxios'
+// import {AxiosInstance} from '@types/axios'
 
 export interface IOptions {
     headers: any
 }
 
 export class AxiosDriver {
-    public instance: any = axios
+    public instance: AxiosInstance = axios
     public moxios: typeof moxios = moxios
 
     public enableMoxios() {
