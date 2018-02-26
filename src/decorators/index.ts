@@ -2,19 +2,29 @@ import 'reflect-metadata'
 
 export function driver(api: any) {
     return (target: any) => {
-        target.prototype.driver = new api()
+        Reflect.defineMetadata(
+            'driver',
+            new api(),
+            target
+        )
 
         return target
     }
 }
 
-export function rest({endpoint, baseUrl}: {endpoint: string, baseUrl: string}) {
+export function rest({endpoint, baseUrl}: {endpoint: string; baseUrl: string}) {
     return (target: any) => {
-        target.prototype.endpoint = endpoint
+        Reflect.defineMetadata(
+            'endpoint',
+            endpoint,
+            target
+        )
 
-        if (baseUrl && target.prototype.driver) {
-            target.prototype.driver.baseUrl = baseUrl
-        }
+        Reflect.defineMetadata(
+            'baseUrl',
+            baseUrl,
+            target
+        )
 
         return target
     }

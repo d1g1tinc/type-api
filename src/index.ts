@@ -1,4 +1,5 @@
 export * from './rest'
+export * from './api'
 export * from './drivers/axios'
 export * from './decorators'
 export * from './storage'

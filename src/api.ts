@@ -13,69 +13,81 @@ export interface IError {
 @driver(AxiosDriver)
 export class Api {
     driver: any
-    endpoint: string
 
-    prepareRequest(endpoint: string, postData: any, options: any) {
-        if (!options) {
-            options = {}
+    prepareRequest(endpoint: string, postData: any, options: any = {}) {
+        if (!this.driver) {
+            this.driver = Reflect.getMetadata('driver', this.constructor)
         }
 
         const beforeRequest = Reflect.getMetadata('beforeRequest', this.constructor)
 
-        if (!beforeRequest) {
-            return {
-                endpoint,
-                postData,
-                options
-            }
-        }
-
-        beforeRequest.forEach((middleware: any) => {
-            const resp = middleware(endpoint, postData, options)
-
-            endpoint = resp.endpoint
-            postData = resp.postData
-            options = resp.options
-        })
-
-        return {
+        let request = {
             endpoint,
             postData,
             options
         }
+
+        if (!beforeRequest) {
+            return request
+        }
+
+        beforeRequest.forEach((middleware: any) => {
+            request = middleware(request.endpoint, request.postData, request.options)
+        })
+
+        return request
+    }
+
+    public getEndpoint() {
+        return Reflect.getMetadata('endpoint', this.constructor)
+    }
+
+    buildUrl(initialEndpoint: string) {
+        const urlBuild = [Reflect.getMetadata('baseUrl', this.constructor)]
+
+        if (this.getEndpoint() && this.getEndpoint() !== '') {
+            urlBuild.push(this.getEndpoint())
+        }
+
+        urlBuild.push(initialEndpoint)
+
+        return urlBuild.map(urlPath => urlPath.replace(/^\/?|\/?$/, '')).join('/')
     }
 
     afterResponse(response: any) {
         const afterRequest = Reflect.getMetadata('afterRequest', this.constructor)
 
+        let processedResponse = response
+
         if (!afterRequest) {
-            return response
+            return processedResponse
         }
 
         afterRequest.forEach((middleware: any) => {
-            response = middleware(response)
+            processedResponse = middleware(processedResponse)
         })
 
-        return response
+        return processedResponse
     }
 
     handlerError(error: any) {
         const onError = Reflect.getMetadata('onError', this.constructor)
+        let processedError = error
 
         if (!onError) {
-            return error
+            return processedError
         }
 
         onError.forEach((middleware: any) => {
-            error = middleware(error)
+            processedError = middleware(processedError)
         })
 
-        return error
+        return processedError
     }
 
     async post<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
         try {
-            const {endpoint, postData, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, initialPostData, initialOptions)
+            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
             let response = await this.driver.post(endpoint, postData, options)
 
@@ -89,7 +101,7 @@ export class Api {
 
     async put<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
         try {
-            const {endpoint, postData, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, initialPostData, initialOptions)
+            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
             let response = await this.driver.put(endpoint, postData, options)
 
@@ -103,7 +115,7 @@ export class Api {
 
     async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
         try {
-            const {endpoint, postData, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, initialPostData, initialOptions)
+            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
             let response = await this.driver.patch(endpoint, postData, options)
 
@@ -117,7 +129,7 @@ export class Api {
 
     async delete<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
         try {
-            const {endpoint, postData, options} = this.prepareRequest(`${this.endpoint}/${initialEndpoint}`, null, initialOptions)
+            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), null, initialOptions)
 
             let response = await this.driver.delete(endpoint, options)
 
@@ -131,15 +143,7 @@ export class Api {
 
     async get<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
         try {
-            const urlBuild = []
-
-            if (this.endpoint && this.endpoint !== '') {
-                urlBuild.push(this.endpoint)
-            }
-
-            urlBuild.push(initialEndpoint)
-
-            const {endpoint, options} = this.prepareRequest(urlBuild.join('/'), null, initialOptions)
+            const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), null, initialOptions)
 
             let response = await this.driver.get(endpoint, options)
 

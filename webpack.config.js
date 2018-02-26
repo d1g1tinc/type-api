@@ -9,6 +9,7 @@ const packageName = normalizePackageName(packageJSON.name)
 const LIB_NAME = pascalCase(packageName)
 const PATHS = {
   entryPoint: resolve(__dirname, 'src/index.ts'),
+  browser: resolve(__dirname, 'browser'),
   umd: resolve(__dirname, 'umd'),
   fesm: resolve(__dirname, 'lib-fesm'),
 }
@@ -27,7 +28,7 @@ const EXTERNALS = {
 
 const RULES = {
   ts: {
-    test: /\.tsx?$/,
+    test: /\.ts?$/,
     include: /src/,
     use: [
       {
@@ -43,13 +44,13 @@ const RULES = {
     ],
   },
   tsNext: {
-    test: /\.tsx?$/,
+    test: /\.ts?$/,
     include: /src/,
     use: [
       {
         loader: 'awesome-typescript-loader',
         options: {
-          target: 'es2017',
+          target: 'node',
         },
       },
     ],
@@ -84,15 +85,58 @@ const config = (env = DEFAULT_ENV) => {
     })
   ])
 
+  const BrowserConfig = {
+    // These are the entry point of our library. We tell webpack to use
+    // the name we assign later, when creating the bundle. We also use
+    // the name to filter the second entry point for applying code
+    // minification via UglifyJS
+    entry: {
+      [ifProd(`index.min`, 'index')]: [PATHS.entryPoint],
+    },
+    mode: 'production',
+    node: {process: false},
+    // The output defines how and where we want the bundles. The special
+    // value `[name]` in `filename` tell Webpack to use the name we defined above.
+    // We target a UMD and name it MyLib. When including the bundle in the browser
+    // it will be accessible at `window.MyLib`
+    output: {
+      path: PATHS.browser,
+      filename: '[name].js',
+      libraryTarget: 'umd',
+      library: LIB_NAME,
+      // libraryExport:  LIB_NAME,
+      // will name the AMD module of the UMD build. Otherwise an anonymous define is used.
+      umdNamedDefine: true,
+    },
+    // Add resolve for `tsx` and `ts` files, otherwise Webpack would
+    // only look for common JavaScript file extension (.js)
+    resolve: {
+      modules: ['src', 'node_modules'],
+      extensions: ['.ts', '.tsx', '.js'],
+    },
+    // add here all 3rd party libraries that you will use as peerDependncies
+    // https://webpack.js.org/guides/author-libraries/#add-externals
+    externals: EXTERNALS,
+    // Activate source maps for the bundles in order to preserve the original
+    // source when the user debugs the application
+    devtool: 'source-map',
+    plugins: PLUGINS,
+    module: {
+      rules: [RULES.ts],
+    },
+  }
+
   const UMDConfig = {
     // These are the entry point of our library. We tell webpack to use
     // the name we assign later, when creating the bundle. We also use
     // the name to filter the second entry point for applying code
     // minification via UglifyJS
     entry: {
-      [ifProd(`${packageName}.min`, packageName)]: [PATHS.entryPoint],
+      [ifProd(`index.min`, 'index')]: [PATHS.entryPoint],
     },
+    mode: 'production',
     node: {process: false},
+    target: 'node',
     // The output defines how and where we want the bundles. The special
     // value `[name]` in `filename` tell Webpack to use the name we defined above.
     // We target a UMD and name it MyLib. When including the bundle in the browser
@@ -120,7 +164,7 @@ const config = (env = DEFAULT_ENV) => {
     devtool: 'source-map',
     plugins: PLUGINS,
     module: {
-      rules: [RULES.ts],
+      rules: [RULES.tsNext],
     },
   }
 
@@ -137,7 +181,7 @@ const config = (env = DEFAULT_ENV) => {
     },
   })
 
-  return [UMDConfig, FESMconfig]
+  return [BrowserConfig, UMDConfig ,FESMconfig]
 }
 
 module.exports = config
