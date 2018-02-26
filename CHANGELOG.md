@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.0-beta.8"></a>
+# [0.1.0-beta.8](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.7...v0.1.0-beta.8) (2018-02-26)
+
+
+### Features
+
+* Added compability with node and react native ([b2ca5e0](https://www.github.com/casual-solutions/type-api/commit/b2ca5e0))
+
+
+
 <a name="0.1.0-beta.7"></a>
 # [0.1.0-beta.7](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.6...v0.1.0-beta.7) (2018-02-26)
 
