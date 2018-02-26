@@ -1,4 +1,4 @@
-import {AxiosDriver, IOptions} from './drivers/axios'
+import {axiosDriver, IOptions} from './drivers/axios'
 
 import {driver} from './decorators'
 
@@ -10,9 +10,17 @@ export interface IError {
     error: string
 }
 
-@driver(AxiosDriver)
+@driver(axiosDriver)
 export class Api {
     driver: any
+
+    getDriver() {
+        return this.driver
+    }
+
+    setDriver(driverInstance: any) {
+        this.driver = driverInstance
+    }
 
     prepareRequest(endpoint: string, postData: any, options: any = {}) {
         if (!this.driver) {

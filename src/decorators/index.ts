@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 
-export function driver(api: any) {
+export function driver(driverInstance: any) {
     return (target: any) => {
         Reflect.defineMetadata(
             'driver',
-            new api(),
+            driverInstance,
             target
         )
 

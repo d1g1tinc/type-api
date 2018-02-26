@@ -1,4 +1,4 @@
-import {AxiosDriver, IOptions} from './drivers/axios'
+import {axiosDriver, IOptions} from './drivers/axios'
 
 import {Api, IResponseObject, IError} from './api'
 
@@ -8,7 +8,7 @@ export type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 }
 
-@driver(AxiosDriver)
+@driver(axiosDriver)
 export class RestApi<T_MODEL = any, T_MODEL_LIST = T_MODEL[]> extends Api {
     async create(data: T_MODEL, options?: any): Promise<T_MODEL> {
         try {

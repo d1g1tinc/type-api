@@ -90,7 +90,9 @@
     }
   },
   "dependencies": {
+    "@types/moxios": "0.4.8",
     "axios": "0.18.0",
+    "moxios": "0.4.0",
     "reflect-metadata": "0.1.12",
     "webpack-cli": "2.0.9"
   },
