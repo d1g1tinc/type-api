@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-beta.0"></a>
+# [1.0.0-beta.0](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.8...v1.0.0-beta.0) (2018-02-26)
+
+
+### Features
+
+* **Moxios:** Exposed moxios for better testing ([d8e2555](https://www.github.com/casual-solutions/type-api/commit/d8e2555))
+
+
+### BREAKING CHANGES
+
+* **Moxios:** Changed inteface for driver decorator
+
+
+
 <a name="0.1.0-beta.8"></a>
 # [0.1.0-beta.8](https://www.github.com/casual-solutions/type-api/compare/v0.1.0-beta.7...v0.1.0-beta.8) (2018-02-26)
 
