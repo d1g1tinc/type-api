@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://www.github.com/casual-solutions/type-api/compare/v1.0.0...v1.1.0) (2018-06-08)
+
+
+### Features
+
+* **Decorators:** Updated before decorator to allow it to apply to method ([628cb35](https://www.github.com/casual-solutions/type-api/commit/628cb35))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://www.github.com/casual-solutions/type-api/compare/v1.0.0-beta.1...v1.0.0) (2018-06-08)
 
