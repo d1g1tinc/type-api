@@ -32,17 +32,38 @@ export function rest({endpoint, baseUrl}: {endpoint: string; baseUrl: string}) {
 
 export function before (requestHandler: any): any {
     return (target: any, propertyName: any, descriptor: any) => {
-      const beforeRequest = Reflect.getMetadata('beforeRequest', target) || []
+        // Method
+        if (descriptor) {
+            const method = descriptor.value
 
-      beforeRequest.push(requestHandler)
+            descriptor.value = async function (...args: any[]) {
+                if (!method) {
+                    return
+                }
 
-      Reflect.defineMetadata(
-        'beforeRequest',
-        beforeRequest,
-        target
-      )
+                const data = requestHandler(...args)
 
-      return target
+                try {
+                    return await method.apply(this, [data.endpoint, data.data, data.options])
+                } catch (err) {
+                    throw err
+                }
+            }
+
+            return
+        }
+
+        const beforeRequest = Reflect.getMetadata('beforeRequest', target) || []
+
+        beforeRequest.push(requestHandler)
+
+        Reflect.defineMetadata(
+          'beforeRequest',
+          beforeRequest,
+          target
+        )
+
+        return target
     }
 }
 

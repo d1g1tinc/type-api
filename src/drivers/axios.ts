@@ -11,7 +11,7 @@ export class AxiosDriver {
     public moxios: typeof moxios = moxios
 
     public enableMoxios() {
-        this.moxios.install(this.instance)
+        this.moxios.install(<any>this.instance)
     }
 
     public get(url: string, options?: IOptions): Promise<any> {
