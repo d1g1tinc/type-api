@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.1"></a>
+## [1.1.1](https://www.github.com/casual-solutions/type-api/compare/v1.1.0...v1.1.1) (2018-06-14)
+
+
+### Bug Fixes
+
+* **UrlBuilder:** Fixed unhandled error ([87256cd](https://www.github.com/casual-solutions/type-api/commit/87256cd))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://www.github.com/casual-solutions/type-api/compare/v1.0.0...v1.1.0) (2018-06-08)
 
