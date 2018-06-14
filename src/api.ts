@@ -59,7 +59,9 @@ export class Api {
 
         urlBuild.push(initialEndpoint)
 
-        return urlBuild.map(urlPath => urlPath.replace(/^\/?|\/?$/, '')).join('/')
+        return urlBuild
+            .filter(urlPath => !!urlPath)
+            .map(urlPath => urlPath.replace(/^\/?|\/?$/, '')).join('/')
     }
 
     afterResponse(response: any) {
