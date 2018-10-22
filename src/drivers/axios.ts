@@ -1,13 +1,12 @@
-import {default as axios, AxiosInstance} from 'axios'
+import {default as axios, AxiosStatic, AxiosRequestConfig} from 'axios'
 import * as moxios from 'moxios'
-// import {AxiosInstance} from '@types/axios'
 
-export interface IOptions {
-    headers: any
-}
+export const CancelToken = axios.CancelToken
+
+export interface IOptions extends AxiosRequestConfig {}
 
 export class AxiosDriver {
-    public instance: AxiosInstance = axios
+    public instance: AxiosStatic = axios
     public moxios: typeof moxios = moxios
 
     public enableMoxios() {

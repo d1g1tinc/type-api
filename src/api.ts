@@ -22,7 +22,7 @@ export class Api {
         this.driver = driverInstance
     }
 
-    prepareRequest(endpoint: string, postData: any, options: any = {}) {
+    prepareRequest(endpoint: string, postData: any, options: IOptions = {}) {
         if (!this.driver) {
             this.driver = Reflect.getMetadata('driver', this.constructor)
         }
@@ -95,7 +95,7 @@ export class Api {
         return processedError
     }
 
-    async post<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
+    async post<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
         try {
             const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
@@ -109,7 +109,7 @@ export class Api {
         }
     }
 
-    async put<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
+    async put<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
         try {
             const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
@@ -123,7 +123,7 @@ export class Api {
         }
     }
 
-    async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: any): Promise<T> {
+    async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
         try {
             const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
@@ -137,7 +137,7 @@ export class Api {
         }
     }
 
-    async delete<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
+    async delete<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
         try {
             const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), null, initialOptions)
 
@@ -151,7 +151,7 @@ export class Api {
         }
     }
 
-    async get<T = any>(initialEndpoint: string, initialOptions?: any): Promise<T> {
+    async get<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
         try {
             const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), null, initialOptions)
 
@@ -161,8 +161,6 @@ export class Api {
 
             return <T>response.data
         } catch (error) {
-            console.log(error)
-
             throw this.handlerError(error)
         }
     }
