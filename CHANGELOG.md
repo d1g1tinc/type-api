@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.3-beta.1"></a>
+## [1.1.3-beta.1](https://github.com/casual-solutions/type-api/compare/v1.1.3-beta.0...v1.1.3-beta.1) (2018-12-14)
+
+
+
 <a name="1.1.3-beta.0"></a>
 ## [1.1.3-beta.0](https://github.com/casual-solutions/type-api/compare/v1.1.2...v1.1.3-beta.0) (2018-12-14)
 
