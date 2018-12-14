@@ -1,5 +1,5 @@
 export class JWTSession {
-    private keepAliveUrl = ''
+    readonly keepAliveUrl = ''
     private token = ''
 
     constructor (config: any) {

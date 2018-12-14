@@ -57,6 +57,9 @@
     "no-invalid-this": false,
     "no-import-side-effect": false,
     "no-arg": false,
+    "array-type": false,
+    "prefer-array-literal": false,
+    "no-shadowed-variable": false,
     /**
      * Additional rules to improve code quality
      */

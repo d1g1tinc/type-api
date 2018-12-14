@@ -61,7 +61,8 @@ export class Api {
 
         return urlBuild
             .filter(urlPath => !!urlPath)
-            .map(urlPath => urlPath.replace(/^\/?|\/?$/, '')).join('/')
+            .map(urlPath => urlPath.replace(/^\/?|\/?$/, ''))
+            .join('/')
     }
 
     afterResponse(response: any) {
@@ -139,7 +140,7 @@ export class Api {
 
     async delete<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
         try {
-            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), null, initialOptions)
+            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
 
             let response = await this.driver.delete(endpoint, options)
 
@@ -153,7 +154,7 @@ export class Api {
 
     async get<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
         try {
-            const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), null, initialOptions)
+            const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
 
             let response = await this.driver.get(endpoint, options)
 
