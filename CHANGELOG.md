@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.2.0-0](https://github.com/casual-solutions/type-api/compare/v1.1.3-beta.1...v1.2.0-0) (2019-02-18)
+
+
+### Features
+
+* **rest:** Added findOne method ([510595d](https://github.com/casual-solutions/type-api/commit/510595d))
+
+
+
 <a name="1.1.3-beta.1"></a>
 ## [1.1.3-beta.1](https://github.com/casual-solutions/type-api/compare/v1.1.3-beta.0...v1.1.3-beta.1) (2018-12-14)
 
