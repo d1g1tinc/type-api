@@ -55,6 +55,18 @@ export class RestApi<T_MODEL = any, T_MODEL_LIST = T_MODEL[]> extends Api {
         }
     }
 
+    async findOne(params: Object, options: any = {}): Promise<T_MODEL> {
+        options.params = params
+
+        try {
+            const result = await this.get<T_MODEL>('', options)
+
+            return result && result[0]
+        } catch (error) {
+            throw error
+        }
+    }
+
     async updateAttributes(id: number | string, data: DeepPartial<T_MODEL>, options?: IOptions): Promise<T_MODEL> {
         try {
             return await this.patch<T_MODEL>(`${id}`, data, options)

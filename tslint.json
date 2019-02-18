@@ -10,6 +10,7 @@
       true,
       "spaces"
     ],
+    "import-name": false,
     "ordered-imports": [false, {}],
     "no-console": [
       false,
@@ -32,7 +33,7 @@
     "no-var-requires": false,
     "member-access": false,
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
-    "max-classes-per-file": [false],
+    "max-classes-per-file": false,
     "arrow-parens": false,
     "object-literal-sort-keys": false,
     "jsx-no-multiline-js": false,
