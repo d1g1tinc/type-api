@@ -16,17 +16,14 @@
 ### Webpack
 
 ```ts
-import {RestApi, rest} from 'type-api'
+import {RestApi} from 'type-api'
 
 /**
  * Define rest api
  */
-@rest({
-    baseUrl: 'https://jsonplaceholder.typicode.com',
-    endpoint: '/posts'
-})
 class PostApi extends RestApi {
-    // Here you can define additional methods as needed
+    baseUrl = 'https://jsonplaceholder.typicode.com'
+    endpoint = '/posts'
 }
 
 /**
@@ -79,6 +76,7 @@ try {
 
 * `findById(id)` : GET - retrieve one record as object
 * `findAll()` : GET - retrieve all records as list
+* `findOne({name: 'some name'})` : GET - retrieve one record from list of response results
 * `find({limit: 3})` : GET - retrieve records as list and generate query string from object
 * `create({name: 'Some Name'})` : POST - submit object for creation
 * `update(1, {name: 'Some Name'})` : PUT - submit object for update
@@ -87,4 +85,5 @@ try {
 
 * `get('custom')`
 * `post('custom', postData)`
-* `put('custom', postData)`
+* `put('custom', putData)`
+* `patch('custom', patchData)`

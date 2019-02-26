@@ -50,7 +50,6 @@ export class Api {
 
   buildUrl(initialEndpoint: string) {
     const urlBuild = [this.baseUrl]
-    console.error(this)
 
     if (this.endpoint && this.endpoint !== '') {
       urlBuild.push(this.endpoint)
@@ -105,7 +104,6 @@ export class Api {
 
       return <T> response.data
     } catch (error) {
-      console.error('error', error)
       throw this.handlerError(error)
     }
   }
