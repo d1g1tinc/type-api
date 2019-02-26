@@ -3,166 +3,166 @@ import {axiosDriver, IOptions} from './drivers/axios'
 import {driver} from './decorators'
 
 export interface IResponseObject {
-    data: any
+  data: any
 }
 
 export interface IError {
-    error: string
+  error: string
 }
 
 @driver(axiosDriver)
 export class Api {
-    driver: any
+  driver: any
+  baseUrl = ''
+  endpoint = ''
 
-    getDriver() {
-        return this.driver
+  getDriver() {
+    return this.driver
+  }
+
+  setDriver(driverInstance: any) {
+    this.driver = driverInstance
+  }
+
+  prepareRequest(endpoint: string, postData: any, options: IOptions = {}) {
+    if (!this.driver) {
+      this.driver = Reflect.getMetadata('driver', this.constructor)
     }
 
-    setDriver(driverInstance: any) {
-        this.driver = driverInstance
+    const beforeRequest = Reflect.getMetadata('beforeRequest', this.constructor)
+
+    let request = {
+      endpoint,
+      postData,
+      options
     }
 
-    prepareRequest(endpoint: string, postData: any, options: IOptions = {}) {
-        if (!this.driver) {
-            this.driver = Reflect.getMetadata('driver', this.constructor)
-        }
-
-        const beforeRequest = Reflect.getMetadata('beforeRequest', this.constructor)
-
-        let request = {
-            endpoint,
-            postData,
-            options
-        }
-
-        if (!beforeRequest) {
-            return request
-        }
-
-        beforeRequest.forEach((middleware: any) => {
-            request = middleware(request.endpoint, request.postData, request.options)
-        })
-
-        return request
+    if (!beforeRequest) {
+      return request
     }
 
-    public getEndpoint() {
-        return Reflect.getMetadata('endpoint', this.constructor)
+    beforeRequest.forEach((middleware: any) => {
+      request = middleware(request.endpoint, request.postData, request.options)
+    })
+
+    return request
+  }
+
+  buildUrl(initialEndpoint: string) {
+    const urlBuild = [this.baseUrl]
+    console.error(this)
+
+    if (this.endpoint && this.endpoint !== '') {
+      urlBuild.push(this.endpoint)
     }
 
-    buildUrl(initialEndpoint: string) {
-        const urlBuild = [Reflect.getMetadata('baseUrl', this.constructor)]
+    urlBuild.push(initialEndpoint)
 
-        if (this.getEndpoint() && this.getEndpoint() !== '') {
-            urlBuild.push(this.getEndpoint())
-        }
+    return urlBuild
+      .filter(urlPath => !!urlPath)
+      .map(urlPath => urlPath.replace(/^\/?|\/?$/, ''))
+      .join('/')
+  }
 
-        urlBuild.push(initialEndpoint)
+  afterResponse(response: any) {
+    const afterRequest = Reflect.getMetadata('afterRequest', this.constructor)
 
-        return urlBuild
-            .filter(urlPath => !!urlPath)
-            .map(urlPath => urlPath.replace(/^\/?|\/?$/, ''))
-            .join('/')
+    let processedResponse = response
+
+    if (!afterRequest) {
+      return processedResponse
     }
 
-    afterResponse(response: any) {
-        const afterRequest = Reflect.getMetadata('afterRequest', this.constructor)
+    afterRequest.forEach((middleware: any) => {
+      processedResponse = middleware(processedResponse)
+    })
 
-        let processedResponse = response
+    return processedResponse
+  }
 
-        if (!afterRequest) {
-            return processedResponse
-        }
+  handlerError(error: any) {
+    const onError = Reflect.getMetadata('onError', this.constructor)
+    let processedError = error
 
-        afterRequest.forEach((middleware: any) => {
-            processedResponse = middleware(processedResponse)
-        })
-
-        return processedResponse
+    if (!onError) {
+      return processedError
     }
 
-    handlerError(error: any) {
-        const onError = Reflect.getMetadata('onError', this.constructor)
-        let processedError = error
+    onError.forEach((middleware: any) => {
+      processedError = middleware(processedError)
+    })
 
-        if (!onError) {
-            return processedError
-        }
+    return processedError
+  }
 
-        onError.forEach((middleware: any) => {
-            processedError = middleware(processedError)
-        })
+  async post<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
+    try {
+      const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
-        return processedError
+      let response = await this.driver.post(endpoint, postData, options)
+
+      response = this.afterResponse(response)
+
+      return <T> response.data
+    } catch (error) {
+      console.error('error', error)
+      throw this.handlerError(error)
     }
+  }
 
-    async post<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
-        try {
-            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
+  async put<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
+    try {
+      const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
-            let response = await this.driver.post(endpoint, postData, options)
+      let response = await this.driver.put(endpoint, postData, options)
 
-            response = this.afterResponse(response)
+      response = this.afterResponse(response)
 
-            return <T>response.data
-        } catch (error) {
-            throw this.handlerError(error)
-        }
+      return <T> response.data
+    } catch (error) {
+      throw this.handlerError(error)
     }
+  }
 
-    async put<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
-        try {
-            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
+  async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
+    try {
+      const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
-            let response = await this.driver.put(endpoint, postData, options)
+      let response = await this.driver.patch(endpoint, postData, options)
 
-            response = this.afterResponse(response)
+      response = this.afterResponse(response)
 
-            return <T>response.data
-        } catch (error) {
-            throw this.handlerError(error)
-        }
+      return <T> response.data
+    } catch (error) {
+      throw this.handlerError(error)
     }
+  }
 
-    async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
-        try {
-            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
+  async delete<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
+    try {
+      const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
 
-            let response = await this.driver.patch(endpoint, postData, options)
+      let response = await this.driver.delete(endpoint, options)
 
-            response = this.afterResponse(response)
+      response = this.afterResponse(response)
 
-            return <T>response.data
-        } catch (error) {
-            throw this.handlerError(error)
-        }
+      return <T> response.data
+    } catch (error) {
+      throw this.handlerError(error)
     }
+  }
 
-    async delete<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
-        try {
-            const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
+  async get<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
+    try {
+      const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
 
-            let response = await this.driver.delete(endpoint, options)
+      let response = await this.driver.get(endpoint, options)
 
-            response = this.afterResponse(response)
+      response = this.afterResponse(response)
 
-            return <T>response.data
-        } catch (error) {
-            throw this.handlerError(error)
-        }
+      return <T> response.data
+    } catch (error) {
+      throw this.handlerError(error)
     }
-
-    async get<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
-        try {
-            const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
-
-            let response = await this.driver.get(endpoint, options)
-
-            response = this.afterResponse(response)
-
-            return <T>response.data
-        } catch (error) {
-            throw this.handlerError(error)
-        }
-    }
+  }
 }

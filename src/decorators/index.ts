@@ -1,124 +1,96 @@
 import 'reflect-metadata'
 
 export function driver(driverInstance: any) {
-    return (target: any) => {
-        Reflect.defineMetadata(
-            'driver',
-            driverInstance,
-            target
-        )
+  return (target: any) => {
+    Reflect.defineMetadata(
+      'driver',
+      driverInstance,
+      target
+    )
 
-        return target
-    }
+    return target
+  }
 }
 
-export function rest({endpoint, baseUrl}: {endpoint: string; baseUrl: string}) {
-    return (target: any) => {
-        Reflect.defineMetadata(
-            'endpoint',
-            endpoint,
-            target
-        )
+export function before(requestHandler: any): any {
+  return (target: any, propertyName: any, descriptor: any) => {
+    // Method
+    if (descriptor) {
+      const method = descriptor.value
 
-        Reflect.defineMetadata(
-            'baseUrl',
-            baseUrl,
-            target
-        )
-
-        return target
-    }
-}
-
-export function before (requestHandler: any): any {
-    return (target: any, propertyName: any, descriptor: any) => {
-        // Method
-        if (descriptor) {
-            const method = descriptor.value
-
-            descriptor.value = async function (...args: any[]) {
-                if (!method) {
-                    return
-                }
-
-                const data = requestHandler(...args)
-
-                try {
-                    return await method.apply(this, [data.endpoint, data.data, data.options])
-                } catch (err) {
-                    throw err
-                }
-            }
-
-            return
+      descriptor.value = async function(...args: any[]) {
+        if (!method) {
+          return
         }
 
-        const beforeRequest = Reflect.getMetadata('beforeRequest', target) || []
+        const data = requestHandler(...args)
 
-        beforeRequest.push(requestHandler)
+        return await method.apply(this, [data.endpoint, data.data, data.options])
+      }
 
-        Reflect.defineMetadata(
-          'beforeRequest',
-          beforeRequest,
-          target
-        )
-
-        return target
+      return
     }
+
+    const beforeRequest = Reflect.getMetadata('beforeRequest', target) || []
+
+    beforeRequest.push(requestHandler)
+
+    Reflect.defineMetadata(
+      'beforeRequest',
+      beforeRequest,
+      target
+    )
+
+    return target
+  }
 }
 
 export function after(responseHandler: any): any {
-    return (target: any, propertyName: string, descriptor: any) => {
-        // Method
-        if (descriptor) {
-            const method = descriptor.value
+  return (target: any, propertyName: string, descriptor: any) => {
+    // Method
+    if (descriptor) {
+      const method = descriptor.value
 
-            descriptor.value = async function (...args: any[]) {
-                if (!method) {
-                    return
-                }
-
-                let data
-
-                try {
-                    data = await method.apply(this, args)
-                } catch (err) {
-                    throw err
-                }
-
-                return responseHandler(data)
-            }
-
-            return
+      descriptor.value = async function(...args: any[]) {
+        if (!method) {
+          return
         }
 
-        const afterRequest = Reflect.getMetadata('afterRequest', target) || []
+        const data = await method.apply(this, args)
 
-        afterRequest.push(responseHandler)
+        return responseHandler(data)
+      }
 
-        Reflect.defineMetadata(
-            'afterRequest',
-            afterRequest,
-            target
-        )
-
-        return target
+      return
     }
+
+    const afterRequest = Reflect.getMetadata('afterRequest', target) || []
+
+    afterRequest.push(responseHandler)
+
+    Reflect.defineMetadata(
+      'afterRequest',
+      afterRequest,
+      target
+    )
+
+    return target
+  }
 }
 
 export function errorHandler(responseHandler: any): any {
-    return (target: any, propertyName: string, descriptor: any) => {
-        // class
-        const onError = Reflect.getMetadata('onError', target) || []
+  return (target: any, propertyName: string, descriptor: any) => {
+    // class
+    const onError = Reflect.getMetadata('onError', target) || []
 
-        onError.push(responseHandler)
+    onError.push(responseHandler)
 
-        Reflect.defineMetadata(
-            'onError',
-            onError,
-            target
-        )
+    Reflect.defineMetadata(
+      'onError',
+      onError,
+      target
+    )
 
-        return target
-    }
+    return target
+  }
 }

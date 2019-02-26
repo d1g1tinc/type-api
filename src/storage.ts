@@ -1,50 +1,52 @@
+const storageId = 'JWTSession.token'
+
 export class JWTSession {
-    readonly keepAliveUrl = ''
-    private token = ''
+  readonly keepAliveUrl = ''
+  private token = ''
 
-    constructor (config: any) {
-        const token = localStorage.getItem('JWTSession.token')
+  constructor(config: any) {
+    const token = localStorage.getItem(storageId)
 
-        if (token) {
-            this.token = token
-        }
-
-        this.keepAliveUrl = config.keepAliveUrl
+    if (token) {
+      this.token = token
     }
 
-    authorize (response: any) {
-        if (!response || !response.token) {
-            return
-        }
+    this.keepAliveUrl = config.keepAliveUrl
+  }
 
-        this.token = response.token
-
-        localStorage.setItem('JWTSession.token', this.token)
-
-        return response
+  authorize(response: any) {
+    if (!response || !response.token) {
+      return
     }
 
-    deauthorize (response?: any) {
-        this.token = ''
+    this.token = response.token
 
-        localStorage.removeItem('JWTSession.token')
+    localStorage.setItem(storageId, this.token)
 
-        return response
+    return response
+  }
+
+  deauthorize(response?: any) {
+    this.token = ''
+
+    localStorage.removeItem(storageId)
+
+    return response
+  }
+
+  secure(endpoint: any, postData: any, options: any) {
+    if (!this.token) {
+      return {endpoint, postData, options}
     }
 
-    secure (endpoint: any, postData: any, options: any) {
-        if (!this.token) {
-            return {endpoint, postData, options}
-        }
-
-        if (!options.headers) {
-            options.headers = {
-                'Authorization': `JWT ${this.token}`
-            }
-        } else {
-            options.headers.Authorization = `JWT ${this.token}`
-        }
-
-        return {endpoint, postData, options}
+    if (!options.headers) {
+      options.headers = {
+        Authorization: `JWT ${this.token}`
+      }
+    } else {
+      options.headers.Authorization = `JWT ${this.token}`
     }
+
+    return {endpoint, postData, options}
+  }
 }
