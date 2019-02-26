@@ -2,18 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-# [2.0.0-beta.0](https://github.com/casual-solutions/type-api/compare/v1.2.0...v2.0.0-beta.0) (2019-02-26)
-
-
-### Features
-
-* **rest:** removed [@rest](https://github.com/rest) decorator ([45055e2](https://github.com/casual-solutions/type-api/commit/45055e2))
-
-
-### BREAKING CHANGES
-
-* **rest:** Instead of @rest decorator you should use rest class properties to define baseUrl
-and endpoint
+# [2.0.0-beta.1](https://github.com/casual-solutions/type-api/compare/v2.0.0-beta.0...v2.0.0-beta.1) (2019-02-26)
 
 
 
