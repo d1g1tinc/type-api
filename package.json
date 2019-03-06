@@ -1,5 +1,5 @@
 {
-  "name": "type-api",
+  "name": "@d1g1t/type-api",
   "version": "2.0.0-beta.1",
   "description": "Typescript enabled API library",
   "main": "umd/index.js",
