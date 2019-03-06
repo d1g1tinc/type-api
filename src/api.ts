@@ -24,7 +24,7 @@ export class Api {
     this.driver = driverInstance
   }
 
-  prepareRequest(endpoint: string, postData: any, options: IOptions = {}) {
+  prepareRequest = (endpoint: string, postData: any, options: IOptions = {}) => {
     if (!this.driver) {
       this.driver = Reflect.getMetadata('driver', this.constructor)
     }
@@ -48,7 +48,7 @@ export class Api {
     return request
   }
 
-  buildUrl(initialEndpoint: string) {
+  buildUrl = (initialEndpoint: string) => {
     const urlBuild = [this.baseUrl]
 
     if (this.endpoint && this.endpoint !== '') {
@@ -63,7 +63,7 @@ export class Api {
       .join('/')
   }
 
-  afterResponse(response: any) {
+  afterResponse = (response: any) => {
     const afterRequest = Reflect.getMetadata('afterRequest', this.constructor)
 
     let processedResponse = response
@@ -79,7 +79,7 @@ export class Api {
     return processedResponse
   }
 
-  handlerError(error: any) {
+  handlerError = (error: any) => {
     const onError = Reflect.getMetadata('onError', this.constructor)
     let processedError = error
 
@@ -94,7 +94,7 @@ export class Api {
     return processedError
   }
 
-  async post<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
+  post = async <T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> => {
     try {
       const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
@@ -108,7 +108,7 @@ export class Api {
     }
   }
 
-  async put<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
+  put = async <T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> => {
     try {
       const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
@@ -122,7 +122,7 @@ export class Api {
     }
   }
 
-  async patch<T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> {
+  patch = async <T = any>(initialEndpoint: string, initialPostData: any, initialOptions?: IOptions): Promise<T> => {
     try {
       const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), initialPostData, initialOptions)
 
@@ -136,7 +136,7 @@ export class Api {
     }
   }
 
-  async delete<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
+  delete = async <T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> => {
     try {
       const {endpoint, postData, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
 
@@ -150,7 +150,7 @@ export class Api {
     }
   }
 
-  async get<T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> {
+  get = async <T = any>(initialEndpoint: string, initialOptions?: IOptions): Promise<T> => {
     try {
       const {endpoint, options} = this.prepareRequest(this.buildUrl(initialEndpoint), undefined, initialOptions)
 
